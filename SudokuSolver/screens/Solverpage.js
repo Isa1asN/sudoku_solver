@@ -1,42 +1,118 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { Camera } from 'expo-camera';
+import { Entypo } from '@expo/vector-icons';
+
 
 const Solverpage = ({ navigation }) => {
-  const handleStartPress = () => {
-    // Navigate to the screen where your Sudoku solver logic will be implemented
-    // You can replace 'SolverScreen' with the actual name of your solver screen
-    navigation.navigate('SolverScreen');
+  const [hasPermission, setHasPermission] = useState(null);
+  const [type, setType] = useState(Camera.Constants.Type.back);
+  const [capturedImage, setCapturedImage] = useState(null);
+  const cameraRef = useRef(null);
+
+  useEffect(() => {
+    (async () => {
+      const { status } = await Camera.requestCameraPermissionsAsync();
+      setHasPermission(status === 'granted');
+    })();
+  }, []);
+
+  const takePicture = async () => {
+    if (cameraRef.current) {
+      const photo = await cameraRef.current.takePictureAsync();
+      setCapturedImage(photo);
+    }
   };
 
+  const savePicture = () => {
+    //  logic to save the captured image 
+    console.log('Saved Image:', capturedImage.uri);
+  };
+
+  if (hasPermission === null) {
+    return <View />;
+  }
+
+  if (hasPermission === false) {
+    return <Text>No access to camera</Text>;
+  }
   return (
     <View style={styles.container}>
-      <Text style={styles.welcomeText}>Welcome to Sudoku Solver</Text>
-      {/* <TouchableOpacity style={styles.startButton} onPress={handleStartPress}>
-        <Text style={styles.startButtonText}>Start</Text>
-      </TouchableOpacity> */}
+      <Camera style={styles.camera} type={type} ref={cameraRef}>
+        <View style={styles.overlay}>
+    
+        </View>
+      </Camera>
+      <View style={styles.captureButtonContainer}>
+        <TouchableOpacity onPress={takePicture} style={styles.captureButton}>
+        <Entypo name="camera" size={24} color="black" />
+        </TouchableOpacity>
+      </View>
+      {capturedImage && (
+        <View style={styles.previewContainer}>
+          <Image source={{ uri: capturedImage.uri }} style={styles.previewImage} />
+          <TouchableOpacity onPress={savePicture} style={styles.saveButton}>
+            <Text style={styles.saveText}>Solve</Text>
+          </TouchableOpacity>
+        </View>
+      )}
     </View>
   );
 };
 
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+  },
+  camera: {
+    width :300,
+    height: 300,
+    overflow: 'hidden',
+    alignSelf:'center',
+    marginTop: 50,
+  },
+  overlay: {
+    flex: 1,
+    backgroundColor: 'transparent',
+    justifyContent: 'flex-end',
     alignItems: 'center',
   },
-  welcomeText: {
-    fontSize: 24,
-    marginBottom: 20,
+  captureButtonContainer: {
+    marginBottom: 30,
   },
-  startButton: {
-    backgroundColor: '#3498db', // You can customize the button color
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 5,
+  captureButton: {
+    backgroundColor: 'lightgreen',
+    borderRadius: 50,
+    padding: 15,
+    marginTop: 30,
+    alignSelf: 'center',
   },
-  startButtonText: {
-    color: '#fff', // Button text color
+  captureText: {
     fontSize: 18,
+    color: 'black',
+  },
+  previewContainer: {
+    position: 'absolute',
+    bottom: 20,
+    left: 20,
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  previewImage: {
+    width: 200,
+    height: 200,
+    borderRadius: 10,
+    marginBottom: 10,
+  },
+  saveButton: {
+    backgroundColor: 'lightgreen',
+    borderRadius: 10,
+    padding: 10,
+  },
+  saveText: {
+    fontSize: 16,
+    color: 'black',
   },
 });
 

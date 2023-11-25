@@ -11,7 +11,7 @@ const HomePage = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View>
-        <Image source={myImage} style={{ width: 200, height: 200, borderWidth:2, backgroundColor:'red' }} />
+        <Image source={myImage} style={{ width: 200, height: 200, }} />
       </View>
       <Text style={styles.welcomeText}>Welcome to Sudoku Solver</Text>
       <TouchableOpacity style={styles.startButton} onPress={handleStartPress}>
