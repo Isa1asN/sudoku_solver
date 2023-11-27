@@ -1,5 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import axios from 'axios';
+import { useEffect } from 'react';
 const myImage = require('../assets/logo.jpg');
 
 
@@ -7,6 +9,14 @@ const HomePage = ({ navigation }) => {
   const handleStartPress = () => {
     navigation.navigate('Solver');
   };
+  useEffect(()=>{
+    const fetch = async () => {
+      const response = await axios.get('http://192.168.8.163:5000/home')
+      console.log(response.data)
+    }
+    fetch()
+  }, [])
+
 
   return (
     <View style={styles.container}>

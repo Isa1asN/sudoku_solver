@@ -2,6 +2,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { Camera } from 'expo-camera';
 import { Entypo } from '@expo/vector-icons';
+import axios from 'axios';
+
+
 
 
 const Solverpage = ({ navigation }) => {
@@ -24,10 +27,23 @@ const Solverpage = ({ navigation }) => {
     }
   };
 
-  const savePicture = () => {
-    //  logic to save the captured image 
-    console.log('Saved Image:', capturedImage.uri);
-  };
+  const solvePicture = async () => {
+    if (capturedImage) {
+      try {
+        const imageData = base64(capturedImage.uri);
+        console.log(imageData)
+  
+        const response = await axios.post('http://192.168.8.163:5000/solve_picture', {
+          imageData: imageData,
+        });
+  
+        console.log('Backend response:', response.status);
+        
+      } catch (error) {
+        console.error('Error sending image to backend:', error);
+      }
+    }
+  };  
 
   if (hasPermission === null) {
     return <View />;
@@ -51,7 +67,7 @@ const Solverpage = ({ navigation }) => {
       {capturedImage && (
         <View style={styles.previewContainer}>
           <Image source={{ uri: capturedImage.uri }} style={styles.previewImage} />
-          <TouchableOpacity onPress={savePicture} style={styles.saveButton}>
+          <TouchableOpacity onPress={solvePicture} style={styles.saveButton}>
             <Text style={styles.saveText}>Solve</Text>
           </TouchableOpacity>
         </View>
