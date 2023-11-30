@@ -9,7 +9,7 @@ app = Flask(__name__)
 
 @app.route('/home', methods=['GET'])
 def home():
-    return jsonify({'message': 'Hello World'}), 200
+    return jsonify({'message': 'Backend connection exists...'}), 200
 
 
 UPLOAD_FOLDER = 'received_images'
