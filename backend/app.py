@@ -20,11 +20,11 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 @app.route('/solve_picture', methods=['POST'])
 async def process_image():
     try:
-        data = request.json()
+        data = request.get_json()
         image_data = data.get('imageData')
 
-        print(data)
-        image_bytes = await base64.b64decode(image_data)
+        # print(image_data)
+        image_bytes = base64.b64decode(image_data)
 
         image = Image.open(BytesIO(image_bytes))
         

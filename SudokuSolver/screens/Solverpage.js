@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { Camera } from 'expo-camera';
 import { Entypo } from '@expo/vector-icons';
+import * as FileSystem from 'expo-file-system';
 import axios from 'axios';
 
 
@@ -10,7 +11,7 @@ import axios from 'axios';
 const Solverpage = ({ navigation }) => {
   const [hasPermission, setHasPermission] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
-  const [capturedImage, setCapturedImage] = useState(null);
+  const [capturedImage, setCapturedImage] = useState('');
   const cameraRef = useRef(null);
 
   useEffect(() => {
@@ -28,16 +29,17 @@ const Solverpage = ({ navigation }) => {
   };
 
   const solvePicture = async () => {
-    if (capturedImage) {
+    if (capturedImage.uri) {
       try {
-        const imageData = base64(capturedImage.uri);
-        console.log(imageData)
-  
+        const base64Img = await FileSystem.readAsStringAsync(capturedImage.uri, {
+          encoding: FileSystem.EncodingType.Base64,
+        });
+
         const response = await axios.post('http://192.168.8.163:5000/solve_picture', {
-          imageData: imageData,
+          imageData: base64Img,
         });
   
-        console.log('Backend response:', response.status);
+        console.log('image sent:', response.status);
         
       } catch (error) {
         console.error('Error sending image to backend:', error);
