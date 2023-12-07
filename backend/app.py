@@ -3,6 +3,8 @@ import base64
 from PIL import Image
 from io import BytesIO
 import os
+from processor import process
+from classifier import classify
 
 app = Flask(__name__)
 
@@ -27,12 +29,16 @@ async def process_image():
         image_bytes = base64.b64decode(image_data)
 
         image = Image.open(BytesIO(image_bytes))
-        
 
         save_path = os.path.join(app.config['UPLOAD_FOLDER'], 'received_image.jpg')
         image.save(save_path)
+        print("saved image at: ", save_path)
 
-        return jsonify({'message': 'Image received and saved successfully', 'savedImagePath': save_path})
+        processed_image = process(save_path)
+        classified_list = classify(processed_image)
+        print(classified_list)
+
+        return jsonify({'message': 'Image received and recognized successfully'})
 
     except Exception as e:
         return jsonify({'error': str(e)})

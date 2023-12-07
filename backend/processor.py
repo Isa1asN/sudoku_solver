@@ -4,10 +4,12 @@ import os
 from PIL import Image
 
 def preprocess(image):
+    print('Preprocessing started...')
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY) 
     blur = cv2.GaussianBlur(gray, (3,3), 6) 
     blur = cv2.bilateralFilter(blur, 9, 75, 75)
     threshold_img = cv2.adaptiveThreshold(blur, 255, 1, 1, 11, 2)
+    print('Preprocessing completed...')
     return threshold_img
 
 def main_outline(contour):
@@ -59,7 +61,9 @@ def process(img):
     sudoku_a = cv2.resize(sudoku_a, (450, 450))
     su_contour_2 = sudoku_a.copy()
 
+    img = cv2.imread(img)
     puzzle = cv2.resize(img, (450,450))
+    # print('@@@we are here@@@')
     su_threshold = preprocess(puzzle)
     su_contour_1 = puzzle.copy()
     su_contour, su_hierarchy = cv2.findContours(su_threshold, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
