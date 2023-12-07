@@ -6,7 +6,7 @@ import os
 from tensorflow.keras.models import load_model
 from processor import process
 from classifier import classify
-from solver import solve_sudoku
+from solver import SudokuSolver
 
 app = Flask(__name__)
 
@@ -41,7 +41,8 @@ async def process_image():
         classified_list = classify(model, processed_image)
         print(classified_list)
 
-        solved_puzzle = solve_sudoku(classified_list)
+        s_puzzle = SudokuSolver(classified_list)
+        solved_puzzle = s_puzzle.solve_sudoku()
         print(solved_puzzle)
 
         return jsonify({'message': 'Image received and recognized successfully'})
