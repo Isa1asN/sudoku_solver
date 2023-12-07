@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const SudokuGrid = ({ matrix }) => {
   const cellStyle = (row, col) => {
@@ -30,20 +31,22 @@ const SudokuGrid = ({ matrix }) => {
 const styles = StyleSheet.create({
   container: {
     alignSelf: 'center',
+    backgroundColor: 'lightgreen'
   },
   row: {
     flexDirection: 'row',
   },
   cell: {
-    width: 30,
-    height: 30,
+    width: 35,
+    height: 35,
     justifyContent: 'center',
     alignItems: 'center',
     borderColor: 'black',
   },
   cellText: {
-    fontSize: 18,
+    fontSize: 23,
   },
+ 
 });
 
 export default SudokuGrid;
