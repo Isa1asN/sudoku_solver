@@ -1,1 +1,1 @@
-# sudoku_solver
+# A sudoku solver mobile app using CNN and React native
