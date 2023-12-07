@@ -11,7 +11,7 @@ const HomePage = ({ navigation }) => {
   };
   useEffect(()=>{
     const fetch = async () => {
-      const response = await axios.get('http://192.168.8.163:5000/home')
+      const response = await axios.get('http://192.168.8.108:5000/home')
       console.log(response.data)
     }
     fetch()

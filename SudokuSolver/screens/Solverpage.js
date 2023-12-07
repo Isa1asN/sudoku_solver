@@ -35,7 +35,7 @@ const Solverpage = ({ navigation }) => {
           encoding: FileSystem.EncodingType.Base64,
         });
 
-        const response = await axios.post('http://192.168.8.163:5000/solve_picture', {
+        const response = await axios.post('http://192.168.8.108:5000/solve_picture', {
           imageData: base64Img,
         });
   
