@@ -3,9 +3,8 @@ import numpy as np
 import cv2
 import os
 
-def classify(cropped_cells):
+def classify(model, cropped_cells):
     print("Classifying...")
-    model = load_model('model/model.h5')
 
     cells = np.array([cv2.resize(np.array(img), (32, 32)) for img in cropped_cells])
     puzzle_predictions = model.predict(cells, verbose=False).argmax(axis= -1)

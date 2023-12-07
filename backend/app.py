@@ -3,11 +3,14 @@ import base64
 from PIL import Image
 from io import BytesIO
 import os
+from tensorflow.keras.models import load_model
 from processor import process
 from classifier import classify
+from solver import solve_sudoku
 
 app = Flask(__name__)
 
+model = load_model('model/model.h5')
 
 @app.route('/home', methods=['GET'])
 def home():
@@ -35,8 +38,11 @@ async def process_image():
         print("saved image at: ", save_path)
 
         processed_image = process(save_path)
-        classified_list = classify(processed_image)
+        classified_list = classify(model, processed_image)
         print(classified_list)
+
+        solved_puzzle = solve_sudoku(classified_list)
+        print(solved_puzzle)
 
         return jsonify({'message': 'Image received and recognized successfully'})
 
