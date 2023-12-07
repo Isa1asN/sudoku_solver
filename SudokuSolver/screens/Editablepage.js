@@ -29,6 +29,9 @@ const EditableSudokuPage = () => {
     return (
       <View style={styles.container}>
         <EditableSudokuGrid matrix={editableMatrix} onCellChange={handleCellChange} />
+        <Text style={styles.desctxt}>
+          The recognized puzzle grid is being unsolvable. Please edit the wrong cells and submit to solve.
+        </Text>
         <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
           <Text style={styles.submitButtonText}>Submit</Text>
         </TouchableOpacity>
@@ -39,8 +42,9 @@ const EditableSudokuPage = () => {
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      justifyContent: 'center',
+      // justifyContent: 'center',
       alignItems: 'center',
+      backgroundColor:'lightpink'
     },
     row: {
       flexDirection: 'row',
@@ -57,14 +61,22 @@ const EditableSudokuPage = () => {
       fontSize: 18,
     },
     submitButton: {
-      marginTop: 20,
-      backgroundColor: 'blue',
+      marginTop: 10,
+      backgroundColor: 'purple',
       padding: 10,
       borderRadius: 5,
+      marginBottom: 50,
     },
     submitButtonText: {
       color: 'white',
       fontSize: 16,
+    },
+    desctxt: {
+      fontSize: 15,
+      color: 'red',
+      marginTop: 0,
+      marginBottom: 10,
+      textAlign: 'center',
     },
   });
   
