@@ -41,11 +41,15 @@ async def process_image():
         classified_list = classify(model, processed_image)
         print(classified_list)
 
-        s_puzzle = SudokuSolver(classified_list)
-        solved_puzzle = s_puzzle.solve_sudoku()
-        print(solved_puzzle)
+        puzzle = SudokuSolver(classified_list)
+        solved_puzzle = puzzle.solve_sudoku()
+        if solved_puzzle == -1:
+            print(solved_puzzle, ' : No solution exists for the puzzle, its unsolvable or could be a mistake in classification')
+            return jsonify({'message': 'No solution exists for the puzzle, its unsolvable or could be a mistake in classification'})
+        else:
+            print(solved_puzzle)
+            return jsonify({'message': 'Image received and recognized successfully', 'solved_puzzle': solved_puzzle.tolist()})
 
-        return jsonify({'message': 'Image received and recognized successfully'})
 
     except Exception as e:
         return jsonify({'error': str(e)})

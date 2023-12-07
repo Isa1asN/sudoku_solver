@@ -39,7 +39,8 @@ const Solverpage = ({ navigation }) => {
           imageData: base64Img,
         });
   
-        console.log('image sent:', response.status);
+        console.log('image sent');
+        console.log(response.data['message']);
         
       } catch (error) {
         console.error('Error sending image to backend:', error);
