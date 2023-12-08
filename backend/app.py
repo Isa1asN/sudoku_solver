@@ -45,10 +45,10 @@ async def process_image():
         solved_puzzle = puzzle.solve_sudoku()
         if solved_puzzle == -1:
             print(solved_puzzle, ' : No solution exists for the puzzle, its unsolvable or could be a mistake in classification')
-            return jsonify({'message': 'No solution exists for the puzzle, its unsolvable or could be a mistake in classification'})
+            return jsonify({'message': -1, 'classified' : classified_list.tolist()})
         else:
             print(solved_puzzle)
-            return jsonify({'message': 'Image received and recognized successfully', 'solved_puzzle': solved_puzzle.tolist()})
+            return jsonify({'message': 1, 'solved' : solved_puzzle.tolist()})
 
 
     except Exception as e:

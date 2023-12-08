@@ -40,7 +40,13 @@ const Solverpage = ({ navigation }) => {
         });
   
         console.log('image sent');
-        console.log(response.data['message']);
+        // console.log(response.data['message']);
+        if (response.data['message'] === 1) {
+          navigation.navigate('Solution', {sudokuMatrix: response.data['solved']});
+        } 
+        else if (response.data['message'] === -1) {
+          navigation.navigate('Editable', {sudokuMatrix: response.data['classified']});
+        }
         
       } catch (error) {
         console.error('Error sending image to backend:', error);
