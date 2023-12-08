@@ -2,19 +2,35 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
 import EditableSudokuGrid from '../components/EditableGrid';
 
-const EditableSudokuPage = () => {
-    const [editableMatrix, setEditableMatrix] = useState([
-      [5, 3, 0, 0, 7, 0, 0, 0, 0],
-      [6, 0, 0, 1, 9, 5, 0, 0, 0],
-      [0, 9, 8, 0, 0, 0, 0, 6, 0],
-      [8, 0, 0, 0, 6, 0, 0, 0, 3],
-      [4, 0, 0, 8, 0, 3, 0, 0, 1],
-      [7, 0, 0, 0, 2, 0, 0, 0, 6],
-      [0, 6, 0, 0, 0, 0, 2, 8, 0],
-      [0, 0, 0, 4, 1, 9, 0, 0, 5],
-      [0, 0, 0, 0, 8, 0, 0, 7, 9],
-    ]);
+const EditableSudokuPage = ({route}) => {
+    const { sudokuMatrix } = route.params;
+    
+    const reshapedMatrix = sudokuMatrix.reduce((acc, curr, i) => {
+      const row = Math.floor(i / 9);
+      const col = i % 9;
+      if (col === 0) {
+        acc.push([curr]);
+      } else {
+        acc[row].push(curr);
+      }
+      return acc;
+    }, []);
+
+
+    // const [editableMatrix, setEditableMatrix] = useState([
+    //   [5, 3, 0, 0, 7, 0, 0, 0, 0],
+    //   [6, 0, 0, 1, 9, 5, 0, 0, 0],
+    //   [0, 9, 8, 0, 0, 0, 0, 6, 0],
+    //   [8, 0, 0, 0, 6, 0, 0, 0, 3],
+    //   [4, 0, 0, 8, 0, 3, 0, 0, 1],
+    //   [7, 0, 0, 0, 2, 0, 0, 0, 6],
+    //   [0, 6, 0, 0, 0, 0, 2, 8, 0],
+    //   [0, 0, 0, 4, 1, 9, 0, 0, 5],
+    //   [0, 0, 0, 0, 8, 0, 0, 7, 9],
+    // ]);
   
+    const [editableMatrix, setEditableMatrix] = useState(reshapedMatrix);
+
     const handleCellChange = (row, col, newValue) => {
       const newMatrix = [...editableMatrix];
       newMatrix[row][col] = newValue;
@@ -22,7 +38,7 @@ const EditableSudokuPage = () => {
     };
   
     const handleSubmit = () => {
-      // Implement your submission logic here
+      // 
       console.log('Submitted matrix:', editableMatrix);
     };
   
