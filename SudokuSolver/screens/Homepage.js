@@ -7,7 +7,7 @@ const myImage = require('../assets/logo.jpg');
 
 const HomePage = ({ navigation }) => {
   const handleStartPress = () => {
-    navigation.navigate('Editable');
+    navigation.navigate('Solver');
   };
   useEffect(()=>{
     const fetch = async () => {

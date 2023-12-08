@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Image, ActivityIndicator } from 'react-native';
 import { Camera } from 'expo-camera';
 import { Entypo } from '@expo/vector-icons';
 import * as FileSystem from 'expo-file-system';
@@ -13,6 +13,7 @@ const Solverpage = ({ navigation }) => {
   const [type, setType] = useState(Camera.Constants.Type.back);
   const [capturedImage, setCapturedImage] = useState('');
   const cameraRef = useRef(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -29,6 +30,7 @@ const Solverpage = ({ navigation }) => {
   };
 
   const solvePicture = async () => {
+    setLoading(true)
     if (capturedImage.uri) {
       try {
         const base64Img = await FileSystem.readAsStringAsync(capturedImage.uri, {
@@ -47,6 +49,7 @@ const Solverpage = ({ navigation }) => {
         else if (response.data['message'] === -1) {
           navigation.navigate('Editable', {sudokuMatrix: response.data['classified']});
         }
+        setLoading(false)
         
       } catch (error) {
         console.error('Error sending image to backend:', error);
@@ -73,6 +76,7 @@ const Solverpage = ({ navigation }) => {
         <Entypo name="camera" size={24} color="black" />
         </TouchableOpacity>
       </View>
+      <ActivityIndicator size='large' color="black" animating={loading} />
       {capturedImage && (
         <View style={styles.previewContainer}>
           <Image source={{ uri: capturedImage.uri }} style={styles.previewImage} />
