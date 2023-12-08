@@ -60,16 +60,17 @@ async def solve_grid():
     try:
         data = request.get_json()
         grid = data.get('grid')
-        grid = np.array(grid)
+        # grid = np.array(grid)
+        print("grid received: ", len(grid))
 
         puzzle = SudokuSolver(grid)
         solved_puzzle = puzzle.solve_sudoku()
         if solved_puzzle == -1:
             print(solved_puzzle, ' : No solution exists for the puzzle, its unsolvable or could be a mistake in classification')
-            return jsonify({'message': -1, 'classified' : grid.tolist()})
+            return jsonify({'message': -1, 'classified' : grid})
         else:
             print(solved_puzzle)
-            return jsonify({'message': 1, 'solved' : solved_puzzle.tolist()})
+            return jsonify({'message': 1, 'solved' : solved_puzzle})
 
 
     except Exception as e:

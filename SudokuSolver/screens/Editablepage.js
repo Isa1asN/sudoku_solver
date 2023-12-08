@@ -1,20 +1,22 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
 import EditableSudokuGrid from '../components/EditableGrid';
+import axios from 'axios';
 
-const EditableSudokuPage = ({route}) => {
+const EditableSudokuPage = ({navigation, route}) => {
     const { sudokuMatrix } = route.params;
+    // console.log(sudokuMatrix);s
     
-    const reshapedMatrix = sudokuMatrix.reduce((acc, curr, i) => {
-      const row = Math.floor(i / 9);
-      const col = i % 9;
-      if (col === 0) {
-        acc.push([curr]);
-      } else {
-        acc[row].push(curr);
-      }
-      return acc;
-    }, []);
+    // const reshapedMatrix = sudokuMatrix.reduce((acc, curr, i) => {
+    //   const row = Math.floor(i / 9);
+    //   const col = i % 9;
+    //   if (col === 0) {
+    //     acc.push([curr]);
+    //   } else {
+    //     acc[row].push(curr);
+    //   }
+    //   return acc;
+    // }, []);
 
 
     // const [editableMatrix, setEditableMatrix] = useState([
@@ -29,7 +31,7 @@ const EditableSudokuPage = ({route}) => {
     //   [0, 0, 0, 0, 8, 0, 0, 7, 9],
     // ]);
   
-    const [editableMatrix, setEditableMatrix] = useState(reshapedMatrix);
+    const [editableMatrix, setEditableMatrix] = useState(sudokuMatrix);
 
     const handleCellChange = (row, col, newValue) => {
       const newMatrix = [...editableMatrix];
@@ -37,9 +39,21 @@ const EditableSudokuPage = ({route}) => {
       setEditableMatrix(newMatrix);
     };
   
-    const handleSubmit = () => {
-      // 
-      console.log('Submitted matrix:', editableMatrix);
+    const handleSubmit = async () => {
+
+      const response = await axios.post('http://192.168.8.108:5000/solve_grid', {
+          grid: editableMatrix,
+        });
+        console.log(response.data)
+  
+        if (response.data['message'] === 1) {
+          navigation.navigate('Solution', {sudokuMatrix: response.data['solved']});
+        } 
+        else if (response.data['message'] === -1) {
+          navigation.navigate('Editable', {sudokuMatrix: response.data['classified']});
+        }
+      
+      // console.log('Submitted matrix:', editableMatrix);
     };
   
     return (

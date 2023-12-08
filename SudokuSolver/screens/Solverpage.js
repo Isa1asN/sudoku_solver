@@ -41,7 +41,7 @@ const Solverpage = ({ navigation }) => {
           imageData: base64Img,
         });
   
-        console.log('image sent');
+        console.log('image sent', response.data);
         // console.log(response.data['message']);
         if (response.data['message'] === 1) {
           navigation.navigate('Solution', {sudokuMatrix: response.data['solved']});

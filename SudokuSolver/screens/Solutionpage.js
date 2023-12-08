@@ -15,16 +15,16 @@ const Solutionpage = ({navigation, route}) => {
   //   [0, 0, 0, 0, 8, 0, 0, 7, 9],
   // ];
   const sudokuMatrix = route.params.sudokuMatrix;
-  const reshapedMatrix = sudokuMatrix.reduce((acc, curr, i) => {
-    const row = Math.floor(i / 9);
-    const col = i % 9;
-    if (col === 0) {
-      acc.push([curr]);
-    } else {
-      acc[row].push(curr);
-    }
-    return acc;
-  }, []);
+  // const reshapedMatrix = sudokuMatrix.reduce((acc, curr, i) => {
+  //   const row = Math.floor(i / 9);
+  //   const col = i % 9;
+  //   if (col === 0) {
+  //     acc.push([curr]);
+  //   } else {
+  //     acc[row].push(curr);
+  //   }
+  //   return acc;
+  // }, []);
 
   return (
     <View style={styles.container}>
