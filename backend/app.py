@@ -3,6 +3,7 @@ import base64
 from PIL import Image
 from io import BytesIO
 import os
+import numpy as np
 from tensorflow.keras.models import load_model
 from processor import process
 from classifier import classify
@@ -46,6 +47,26 @@ async def process_image():
         if solved_puzzle == -1:
             print(solved_puzzle, ' : No solution exists for the puzzle, its unsolvable or could be a mistake in classification')
             return jsonify({'message': -1, 'classified' : classified_list.tolist()})
+        else:
+            print(solved_puzzle)
+            return jsonify({'message': 1, 'solved' : solved_puzzle.tolist()})
+
+
+    except Exception as e:
+        return jsonify({'error': str(e)})
+    
+@app.route('/solve_grid', methods=['POST'])
+async def solve_grid():
+    try:
+        data = request.get_json()
+        grid = data.get('grid')
+        grid = np.array(grid)
+
+        puzzle = SudokuSolver(grid)
+        solved_puzzle = puzzle.solve_sudoku()
+        if solved_puzzle == -1:
+            print(solved_puzzle, ' : No solution exists for the puzzle, its unsolvable or could be a mistake in classification')
+            return jsonify({'message': -1, 'classified' : grid.tolist()})
         else:
             print(solved_puzzle)
             return jsonify({'message': 1, 'solved' : solved_puzzle.tolist()})
