@@ -76,10 +76,10 @@ const Solverpage = ({ navigation }) => {
         <Entypo name="camera" size={24} color="black" />
         </TouchableOpacity>
       </View>
-      <ActivityIndicator size='large' color="black" animating={loading} />
       {capturedImage && (
         <View style={styles.previewContainer}>
           <Image source={{ uri: capturedImage.uri }} style={styles.previewImage} />
+          <ActivityIndicator size={80}  style={styles.activityind} color="lightgreen" animating={loading} />
           <TouchableOpacity onPress={solvePicture} style={styles.saveButton}>
             <Text style={styles.saveText}>Solve</Text>
           </TouchableOpacity>
@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'lightgreen',
     borderRadius: 50,
     padding: 15,
-    marginTop: 30,
+    marginTop: -100,
     alignSelf: 'center',
   },
   captureText: {
@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
   },
   previewContainer: {
     position: 'absolute',
-    bottom: 20,
+    bottom: 8,
     left: 20,
     flexDirection: 'column',
     alignItems: 'center',
@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
     width: 200,
     height: 200,
     borderRadius: 10,
-    marginBottom: 10,
+    marginBottom: 5,
   },
   saveButton: {
     backgroundColor: 'lightgreen',
@@ -143,6 +143,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: 'black',
   },
+  activityind: {
+    position: 'absolute',
+    alignSelf: 'center',
+    marginTop: 60,
+  }
 });
 
 export default Solverpage;
