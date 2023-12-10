@@ -43,7 +43,7 @@ async def process_image():
         print(classified_list)
 
         puzzle = SudokuSolver(classified_list)
-        solved_puzzle = puzzle.solve_sudoku()
+        solved_puzzle = puzzle.solve_sudoku(imgFlag=True)
         if solved_puzzle == -1:
             print(solved_puzzle, ' : No solution exists for the puzzle, its unsolvable or could be a mistake in classification')
             return jsonify({'message': -1, 'classified' : classified_list.tolist()})

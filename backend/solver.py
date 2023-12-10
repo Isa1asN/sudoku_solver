@@ -1,4 +1,5 @@
 import numpy as np
+import time
 
 class SudokuSolver:
     def __init__(self, puzzle):
@@ -29,7 +30,10 @@ class SudokuSolver:
                     return False
         return True
 
-    def solve(self):
+    def solve(self, start_time, time_limit, imgFlag=False):
+        if imgFlag:
+            if time.time() - start_time > time_limit:
+                return False
         find = self.find_empty_cell()
         if not find:
             return True
@@ -43,10 +47,12 @@ class SudokuSolver:
                 self.puzzle[row][col] = 0
         return False
 
-    def solve_sudoku(self):
+    def solve_sudoku(self, imgFlag=False):
         print("Solving...")
+    
+        start = time.time()
 
-        flag = self.solve()
+        flag = self.solve(start_time=start, time_limit=15, imgFlag=imgFlag)
         if flag:
             # print("puzzle solved:")
             return self.puzzle
