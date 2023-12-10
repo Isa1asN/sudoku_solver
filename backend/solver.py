@@ -4,6 +4,8 @@ import time
 class SudokuSolver:
     def __init__(self, puzzle):
         self.puzzle = puzzle
+        self.start_time = time.time()
+        self.time_limit = 10
 
     def find_empty_cell(self):
         for i in range(9):
@@ -30,9 +32,9 @@ class SudokuSolver:
                     return False
         return True
 
-    def solve(self, start_time, time_limit, imgFlag=False):
+    def solve(self, imgFlag=False):
         if imgFlag:
-            if time.time() - start_time > time_limit:
+            if time.time() - self.start_time > self.time_limit:
                 return False
         find = self.find_empty_cell()
         if not find:
@@ -49,10 +51,8 @@ class SudokuSolver:
 
     def solve_sudoku(self, imgFlag=False):
         print("Solving...")
-    
-        start = time.time()
 
-        flag = self.solve(start_time=start, time_limit=15, imgFlag=imgFlag)
+        flag = self.solve(imgFlag=imgFlag)
         if flag:
             # print("puzzle solved:")
             return self.puzzle

@@ -95,8 +95,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   camera: {
-    width :300,
-    height: 300,
+    width :500,
+    height:500,
     overflow: 'hidden',
     alignSelf:'center',
     marginTop: 50,
