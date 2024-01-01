@@ -30,7 +30,7 @@ const Solutionpage = ({navigation, route}) => {
     <View style={styles.container}>
       <SudokuGrid matrix={sudokuMatrix} />
       <Text style={styles.solvedtxt}>Solved!</Text>
-      <TouchableOpacity style={{marginTop:45}} onPress={() => navigation.navigate('Home')}>
+      <TouchableOpacity style={{marginTop:45}} onPress={() => navigation.navigate('Solver')}>
         <Text style={styles.tryanth}>try another</Text>
       </TouchableOpacity>
     </View>
@@ -60,3 +60,4 @@ const styles = StyleSheet.create({
 });
 
 export default Solutionpage;
+
