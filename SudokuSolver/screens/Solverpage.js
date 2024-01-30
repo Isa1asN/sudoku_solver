@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet, Image, ActivityIndicator } fr
 import { Camera } from 'expo-camera';
 import { Entypo } from '@expo/vector-icons';
 import * as FileSystem from 'expo-file-system';
+import { MaterialIcons } from '@expo/vector-icons';
 import axios from 'axios';
 
 
@@ -37,7 +38,7 @@ const Solverpage = ({ navigation }) => {
           encoding: FileSystem.EncodingType.Base64,
         });
 
-        const response = await axios.post('http://192.168.8.108:5000/solve_picture', {
+        const response = await axios.post('http://192.168.8.181:5000/solve_picture', {
           imageData: base64Img,
         });
   
@@ -80,9 +81,18 @@ const Solverpage = ({ navigation }) => {
         <View style={styles.previewContainer}>
           <Image source={{ uri: capturedImage.uri }} style={styles.previewImage} />
           <ActivityIndicator size={80}  style={styles.activityind} color="lightgreen" animating={loading} />
-          <TouchableOpacity onPress={solvePicture} style={styles.saveButton}>
-            <Text style={styles.saveText}>Solve</Text>
-          </TouchableOpacity>
+          <View style={{alignItems:'flex-end', flexDirection:'row'}}>
+            <TouchableOpacity onPress={solvePicture} style={styles.saveButton}>
+              <Text style={styles.saveText}>
+                <Entypo name="check" size={24} color="black" />
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => setCapturedImage('')} style={styles.cancel}>
+                <Text style={styles.saveText}>
+                    <Entypo name="cross" size={24} color="black" />
+                </Text>
+            </TouchableOpacity>
+            </View>
         </View>
       )}
     </View>
@@ -111,7 +121,7 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   captureButton: {
-    backgroundColor: 'lightgreen',
+    backgroundColor: '#19e1ac',
     borderRadius: 50,
     padding: 15,
     marginTop: -100,
@@ -135,13 +145,20 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   saveButton: {
-    backgroundColor: 'lightgreen',
+    backgroundColor: '#19e1ac',
     borderRadius: 10,
     padding: 10,
+    marginRight: 30,
   },
+  cancel: {
+    backgroundColor: '#e11919',
+    borderRadius: 10,
+    padding: 10,
+  }
+  ,
   saveText: {
     fontSize: 16,
-    color: 'black',
+    color: 'white',
   },
   activityind: {
     position: 'absolute',
