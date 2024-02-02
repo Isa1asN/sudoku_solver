@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet, Image, ActivityIndicator } fr
 import { Camera } from 'expo-camera';
 import { Entypo } from '@expo/vector-icons';
 import * as FileSystem from 'expo-file-system';
-import { MaterialIcons } from '@expo/vector-icons';
+import {useIsFocused} from '@react-navigation/native'
 import axios from 'axios';
 
 
@@ -15,6 +15,8 @@ const Solverpage = ({ navigation }) => {
   const [capturedImage, setCapturedImage] = useState('');
   const cameraRef = useRef(null);
   const [loading, setLoading] = useState(false);
+  const isFocused = useIsFocused()
+
 
   useEffect(() => {
     (async () => {
@@ -38,14 +40,14 @@ const Solverpage = ({ navigation }) => {
           encoding: FileSystem.EncodingType.Base64,
         });
 
-        const response = await axios.post('http://192.168.8.181:5000/solve_picture', {
+        const response = await axios.post('http://192.168.8.108:5000/solve_picture', {
           imageData: base64Img,
         });
   
-        console.log('image sent', response.data);
+        // console.log('image sent', response.data);
         // console.log(response.data['message']);
         if (response.data['message'] === 1) {
-          navigation.navigate('Solution', {sudokuMatrix: response.data['solved']});
+          navigation.navigate('Solution', {sudokuMatrix: response.data['solved']}, {image : response.data['image']});
         } 
         else if (response.data['message'] === -1) {
           navigation.navigate('Editable', {sudokuMatrix: response.data['classified']});
@@ -67,11 +69,13 @@ const Solverpage = ({ navigation }) => {
   }
   return (
     <View style={styles.container}>
+      { isFocused &&
       <Camera style={styles.camera} type={type} ref={cameraRef}>
         <View style={styles.overlay}>
     
         </View>
       </Camera>
+}
       <View style={styles.captureButtonContainer}>
         <TouchableOpacity onPress={takePicture} style={styles.captureButton}>
         <Entypo name="camera" size={24} color="black" />

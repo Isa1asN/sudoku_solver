@@ -1,5 +1,7 @@
 from flask import Flask, request, jsonify
 import base64
+import imutils
+import cv2
 from PIL import Image
 from io import BytesIO
 import os
@@ -8,6 +10,7 @@ from tensorflow.keras.models import load_model
 from processor import process
 from classifier import classify
 from solver import SudokuSolver
+from annotator import find_puzzle, cellLocFind, annotate
 
 app = Flask(__name__)
 
@@ -61,7 +64,12 @@ async def solve_grid():
         data = request.get_json()
         grid = data.get('grid')
         # grid = np.array(grid)
-        print("grid received: ", len(grid))
+        initial_matrix = data.get('grid')
+        print("grid received: ", initial_matrix)
+        with open('config.txt', 'w') as f:
+            for row in initial_matrix:
+                f.write(' '.join([str(elem) for elem in row]) + '\n')
+
 
         puzzle = SudokuSolver(grid)
         solved_puzzle = puzzle.solve_sudoku()
@@ -69,8 +77,27 @@ async def solve_grid():
             print(solved_puzzle, ' : No solution exists for the puzzle, its unsolvable or could be a mistake in classification')
             return jsonify({'message': -1, 'classified' : grid})
         else:
-            print(solved_puzzle)
-            return jsonify({'message': 1, 'solved' : solved_puzzle})
+            # print(solved_puzzle)
+            imgTobe = cv2.imread('received_images/received_image.jpg')
+            imgTobe = imutils.resize(imgTobe, width=600)
+            (puzzleImage, warped) = find_puzzle(imgTobe, debug=0)
+            cellLocs = cellLocFind(warped)
+            print('unsolved: ', initial_matrix)
+            print('solved: ', solved_puzzle)
+
+            with open('config.txt', 'r') as f:
+                boom = f.read().splitlines()
+            initial_matrix = []
+            for line in boom:
+                initial_matrix.append([int(x) for x in line.split()])
+
+            annotated = annotate(initial_matrix, solved_puzzle, cellLocs, puzzleImage)
+            cv2.imwrite('annotated.png', annotated)
+            # annotated = imutils.resize(annotated, width=300)
+            encoded_img = base64.b64encode(open('annotated.png', 'rb').read()).decode('utf-8')
+
+            return jsonify({'message': 1, 'solved' : solved_puzzle, 'image': encoded_img})
+            
 
 
     except Exception as e:

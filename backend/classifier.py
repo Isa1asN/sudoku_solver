@@ -13,7 +13,7 @@ def classify(model, cropped_cells):
     print('classification complete')
 
     # image is being deleted after processing
-    os.remove('received_images/received_image.jpg')
+    # os.remove('received_images/received_image.jpg')
 
     return puzzle_list
 

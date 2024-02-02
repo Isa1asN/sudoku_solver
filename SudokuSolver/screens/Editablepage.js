@@ -44,10 +44,10 @@ const EditableSudokuPage = ({navigation, route}) => {
       const response = await axios.post('http://192.168.8.108:5000/solve_grid', {
           grid: editableMatrix,
         });
-        console.log(response.data)
+        // console.log(response.data)
   
         if (response.data['message'] === 1) {
-          navigation.navigate('Solution', {sudokuMatrix: response.data['solved']});
+          navigation.navigate('Solution', {data : response.data});
         } 
         else if (response.data['message'] === -1) {
           navigation.navigate('Editable', {sudokuMatrix: response.data['classified']});
