@@ -1,6 +1,6 @@
 # Sudoku solver app
 
-<center><img src='https://github.com/Isa1asN/sudoku_solver/blob/main/screenshot.jpg' alt='scrnsht'/></center>
+<center><img src='https://github.com/Isa1asN/sudoku_solver/blob/main/screenshot.jpg' width=300 alt='scrnsht'/></center>
 
 ## Overview
 
