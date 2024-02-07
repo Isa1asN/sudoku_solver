@@ -1,5 +1,7 @@
 # Sudoku solver app
 
+<center><img src='https://github.com/Isa1asN/sudoku_solver/blob/main/screenshot.jpg' alt='scrnsht'/></center>
+
 ## Overview
 
 The Sudoku Solver App is a mobile application designed to solve Sudoku puzzles using a combination of React Native for the front end, flask for the back end, and a TensorFlow-based Convolutional Neural Network (CNN) for digit recognition within the Sudoku grid.
